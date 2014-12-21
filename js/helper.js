@@ -149,8 +149,10 @@ function initializeMap() {
   function createMapMarker(placeData) {
 
     // The next lines save location data from the search result object to local variables
-    var lat = placeData.geometry.location.k;  // latitude from the place service
-    var lon = placeData.geometry.location.B;  // longitude from the place service
+    //var lat = placeData.geometry.location.k;  // latitude from the place service
+    var lat = placeData.geometry.location.lat();  // latitude from the place service
+    //var lon = placeData.geometry.location.B;  // longitude from the place service
+    var lon = placeData.geometry.location.lng();  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
 
@@ -158,19 +160,33 @@ function initializeMap() {
     var marker = new google.maps.Marker({
       map: map,
       position: placeData.geometry.location,
-      title: name
+      //title: name
+      title: 'Some name on the map'
     });
     
     // infoWindows are the little helper windows that open when you click
     // or hover over a pin on a map. They usually contain more information
     // about a location.
     var infoWindow = new google.maps.InfoWindow({
-      content: name
+      content: 'fjkdfajsfjfalfjlsdakfkjdfasdfj'
+      //content: bio.contacts[location]
     });
+  
+    var openInfoWindow;
 
     // hmmmm, I wonder what this is about...
     google.maps.event.addListener(marker, 'click', function() {
       // your code goes here!
+      //////////////////////////
+      // close open infoWindow
+      //if (openInfoWindow) { openInfoWindow.close(); }
+
+      // bind clicked marker infoWindow to global variable
+      //openInfoWindow = infoWindow;
+
+      // add infoWindow
+      infoWindow.open(map,marker);
+      //////////////////////////
     });
 
     // this is where the pin actually gets added to the map.
@@ -233,11 +249,11 @@ Uncomment the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window 
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
-  // Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+window.addEventListener('resize', function(e) {
+// Make sure the map bounds get updated on page resize
+map.fitBounds(mapBounds);
+});
